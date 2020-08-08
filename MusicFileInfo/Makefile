@@ -1,2 +1,2 @@
 compile: MusicFileInfo.cpp
-	g++ -o mfi MusicFileInfo.cpp
+	g++ -std=c++98 -Wall -Wextra -o mfi MusicFileInfo.cpp
