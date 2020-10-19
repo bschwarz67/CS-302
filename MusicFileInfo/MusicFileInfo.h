@@ -6,16 +6,16 @@ using namespace std;
 
 class Song {
 	public:
-		string name;
+		string title;
 		int time;
-		
+		int track;
 };
 
 class Album {
 	public: 
 		string name;
 		int time;
-		vector <Song> songs;
+		map <int, Song> songs;
 		int nsongs;
 };
 
@@ -24,5 +24,6 @@ class Artist {
 		string name;
 		int time;
 		map <string, Album> albums;
+		int nsongs;
 	private:
 };
