@@ -8,8 +8,6 @@ command line:
 make
 ./mfi
 
-
-
 This is the first lab done for the course CS 302. I am doing this course independently of the University, just for personal growth in coding. The lab was a fairly simple lab in c++. You get a formatted file of music information, all lines will look like:
 
 Naima 4:24 Coltrane,_John Giant_Steps Jazz 6
