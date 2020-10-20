@@ -1,0 +1,26 @@
+tl;dr
+
+this project was written in C++ 95 and compiled using g++.
+
+to test-
+
+command line:
+make
+./mfi
+
+
+
+This is the first lab done for the course CS 302. I am doing this course independently of the University, just for personal growth in coding. The lab was a fairly simple lab in c++. You get a formatted file of music information, all lines will look like:
+
+Naima 4:24 Coltrane,_John Giant_Steps Jazz 6
+
+Where you have the song name, then the artist name, then the album name, then the genre, then track number. We had to take the data from the file and output it in a specific format, such as seen here:
+
+Coltrane, John: 4, 18:37
+        Giant Steps: 4, 18:37
+                1. Giant Steps: 4:46
+                3. Countdown: 2:25
+                6. Naima: 4:24
+                7. Mr. P.C.: 7:02
+
+Where the artist name is followed by the number of songs of the artist and the total time the artist's songs last. Next indented 8 spaces is every album name, similaryl with the number of songs in the album and the album time, and finally under each album the songs in each album preceded by the track number and followed by the time of each song.
