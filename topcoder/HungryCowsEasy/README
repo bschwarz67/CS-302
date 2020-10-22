@@ -5,3 +5,9 @@ https://community.topcoder.com/stat?c=problem_statement&pm=15099&rd=17298
 I completed the problem in C++ 95 and compiles in g++. If you want to test it:
 make
 ./a.out
+
+should see:
+
+0
+0 0
+3 2 1 0 4
