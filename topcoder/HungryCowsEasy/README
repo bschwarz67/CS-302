@@ -1,0 +1,7 @@
+This is a topcoder problem called HungryCowsEasy, I have put the link for the problem statement below.
+
+https://community.topcoder.com/stat?c=problem_statement&pm=15099&rd=17298
+
+I completed the problem in C++ 95 and compiles in g++. If you want to test it:
+make
+./a.out
