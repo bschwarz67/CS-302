@@ -15,16 +15,23 @@ vector<int> HungryCowsEasy::findFood(vector <int> &cows, vector <int> &barns) {
 	int low, high;
 
 	//map with x coordinate of barns as key and index in the maps vector as value
-	map<int, int> barnsMap;
-	map<int, int>::iterator barnsMapIterator;
+	map<long long, int> barnsMap;
+	map<long long, int>::iterator barnsMapIterator;
 	
 	//vector that holds at the index that the cow in question is at in the cows vector, the index at which the closest barn is at in the barns vectorn
 	vector<int> cowsInBarns(cows.size());
 
 	//put the barn coordinates, corresponding vector indexes into a map.
 	for(int i = 0; i < barns.size(); i++) {
-		barnsMap.insert(pair<int, int>(barns[i], i));
+		barnsMap.insert(pair<long long, int>(barns[i], i));
 	}
+
+	//sentinelize nodes for cases when there are cows that have a lower or greater distance than any of the barns.
+	long long bignum = 1000000000;
+	bignum *= 1000;
+	barnsMap.insert(pair<long long, int>(bignum, -1));
+	bignum *= -1;
+	barnsMap.insert(pair<long long, int>(bignum, -1));
 	
 
 	//iterate through cows vector, for every cow coordinate, find the closest barn coordinate stored in the barns map.

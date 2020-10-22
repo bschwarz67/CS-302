@@ -1,2 +1,2 @@
-compile: main.cpp
-	g++ -std=c++98 -Wall -Wextra -o a.out main.cpp
+compile: HungryCowsEasy.cpp
+	g++ -std=c++98 -Wall -Wextra -o a.out HungryCowsEasy.cpp
