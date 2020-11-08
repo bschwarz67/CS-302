@@ -117,15 +117,5 @@ int main () {
 		if(i == cowsInBarns.size() - 1) cout << cowsInBarns[i] << endl;
 		else cout << cowsInBarns[i] << ' ';
 	}
-
-
-
-
-
-
-
-
-
-
 	return 0;
 }
