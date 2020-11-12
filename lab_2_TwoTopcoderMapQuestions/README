@@ -20,8 +20,6 @@ g++ SRM-496-Driver.cpp
 should print: 3
 
 
-
-
 to test part 2
 command line:
 
