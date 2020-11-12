@@ -1,0 +1,31 @@
+This is the second lab completed for the course. The lab consists of solving two problems from Topcoder in the way specified by the instructor.
+The problem statements are found here:
+
+part 1 - OneDimensionalBalls:
+https://community.topcoder.com/stat?c=problem_statement&pm=11318&rd=14425
+
+part 2 - BuildingAdvertise:
+https://community.topcoder.com/stat?c=problem_statement&pm=7473&rd=10661
+
+SRM-496-Driver.cpp and SRM-337-Driver.cpp were written by Dr. James Plank at the University of Tennessee - Knoxville to facilitate the testing of the solution of part 1, 2 respectively.
+The problems were solved with C++ 95 and compiled with g++.
+
+
+to test part 1
+command line:
+
+g++ SRM-496-Driver.cpp
+./a.out 0
+
+should print: 3
+
+
+
+
+to test part 2
+command line:
+
+g++ SRM-337-Driver.cpp
+./a.out 2
+
+should print: 104858900000
