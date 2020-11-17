@@ -8,7 +8,7 @@ part 2 - BuildingAdvertise:
 https://community.topcoder.com/stat?c=problem_statement&pm=7473&rd=10661
 
 SRM-496-Driver.cpp and SRM-337-Driver.cpp were written by Dr. James Plank at the University of Tennessee - Knoxville to facilitate the testing of the solution of part 1, 2 respectively.
-The problems were solved with C++ 95 and compiled with g++.
+The problems were solved with C++ 98 and compiled with g++.
 
 
 to test part 1
