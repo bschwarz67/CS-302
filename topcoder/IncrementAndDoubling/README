@@ -1,0 +1,18 @@
+problem statement from IncrementAndDoubling:
+
+https://community.topcoder.com/stat?c=problem_statement&pm=12790&rd=15708
+
+
+problem solved with c++ 95
+
+to test:
+g++ IncrementAndDoubling.cpp
+./a.out
+
+should see:
+3
+7
+9
+2
+40
+84
