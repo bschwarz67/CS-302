@@ -6,7 +6,7 @@ https://community.topcoder.com/stat?c=problem_statement&pm=12790&rd=15708
 problem solved with C++ 98
 
 to test:
-g++ -std=c++98 flag IncrementAndDoubling.cpp
+g++ -std=c++98 IncrementAndDoubling.cpp
 ./a.out
 
 should see:
