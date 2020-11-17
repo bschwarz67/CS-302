@@ -35,7 +35,7 @@ int IncrementAndDoubling::getMin(vector<int> desiredArray) {
 			rv++;
 		}
 	}
-	return rv;i //return the number of operations performed
+	return rv; //return the number of operations performed
 }
 
 
