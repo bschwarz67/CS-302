@@ -1,3 +1,4 @@
+//TODO comment, change around that location of path maybe?, return value of solve function?, constructor?
 #include <map>
 #include <iostream>
 #include <vector>
@@ -18,22 +19,27 @@ class Maze {
 		multimap <int, int> walls;
 		int rows;
 		int cols;
-		bool mazeSolve(Cell * current);
+		bool mazeSolve(Cell * current, vector<int> &path);
 };
 
-bool Maze::mazeSolve(Cell * current) {
-	cout << " test" << endl;
+bool Maze::mazeSolve(Cell * current, vector<int> &path) {
 	map <int, Cell *>:: iterator cit;
-	if(current-> id == (rows * cols) - 1) return true;
+	if(current->id == (rows * cols) - 1) {
+		for(int i = 0; i < path.size(); i++) {
+			cout << "PATH " << path[i] << endl;
+		}
+		return true;
+	}
 	for(cit = current->adjacentCells.begin(); cit != current->adjacentCells.end(); cit++) {
 		if(cit->second->visited == 0) {
 			cit->second->visited = 1;
-			if (mazeSolve(cit->second)) {
-				cout << cit->second->id << endl;
+			path.push_back(cit->second->id);
+			if (mazeSolve(cit->second, path)) {
 				return true;
 			}
 			else {
 				cit->second->visited = 0;
+				path.pop_back();
 			}
 		}	
 	}
@@ -46,19 +52,20 @@ int main() {
 	int i, j;
 	Maze m = Maze();
 	Cell * c;
+	vector<int> path;
 	multimap <int, int>::iterator wit;	
 	map <int, Cell *>::iterator cit;
 	map <int, Cell *>::iterator cit2;
 	cin >> s >> m.rows >> s >> m.cols;
-	
+	cout << "ROWS " << m.rows << " COLS " << m.cols << endl;	
 	while(cin >> s >> i >> j) {
 		m.walls.insert(pair<int,int>(i, j));
 	}
-	/*
+	
 	for(wit = m.walls.begin(); wit != m.walls.end(); wit++) {
-		cout << wit->first << " " << wit->second << endl;
+		cout << "WALL " << wit->first << " " << wit->second << endl;
 	}
-	*/
+	
 
 	for(i = 0; i < m.rows * m.cols; i++) {
 		c = new Cell();
@@ -103,8 +110,12 @@ int main() {
 		cout << endl << endl;
 	}
 	*/
-	bool x = m.mazeSolve(m.cells.find(0)->second);
+	if(m.cells.size() > 0) {
+		m.cells.find(0)->second->visited = 1;
+		path.push_back(0);
+		bool x = m.mazeSolve(m.cells.find(0)->second, path);
 
+	}
 
 
 
