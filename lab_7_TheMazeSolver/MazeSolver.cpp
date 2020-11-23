@@ -1,4 +1,4 @@
-//TODO change around that location of path maybe?, constructor?
+//TODO change around that location of path maybe?
 #include <map>
 #include <iostream>
 #include <vector>
