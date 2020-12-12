@@ -14,7 +14,51 @@ typedef multimap<int, Event *> EBTypeMap;
 
 void CS302_Midi::el_to_nd()
 {
-  nd = new NDMap;
+	vector<ND *> unmatched(128, NULL);
+	nd = new NDMap;
+	NDMap::iterator ndit;
+	EventList::iterator elit;
+	ND* newnd;
+	ND* damper = NULL;
+	double aggtime = 0;
+	for(elit = el->begin(); elit != el->end(); elit++) {
+		
+		if((*elit)->time != 0) aggtime += (*elit)->time;
+		if((*elit)->key == 'O') {
+			newnd = new ND;
+			newnd->key = 'N';
+			newnd->start = aggtime / 480;
+			newnd->pitch = (*elit)->v1;
+			newnd->volume = (*elit)->v2;
+			unmatched[newnd->pitch] = newnd;
+		}
+		else if((*elit)->key == 'F') {
+			unmatched[(*elit)->v1]->stop = aggtime / 480;
+			nd->insert(pair<double, ND*>(unmatched[(*elit)->v1]->start, unmatched[(*elit)->v1]));
+			unmatched[(*elit)->v1] = NULL;
+		}
+		else {
+			if((*elit)->v1 == 1) {
+				damper = new ND;
+				damper->key = 'D';
+				damper->start = aggtime / 480;
+			}
+			else {
+				damper->stop = aggtime / 480;
+				nd->insert(pair<double, ND*>(damper->start, damper));
+				damper = NULL;
+			}
+		}
+	}
+	for(ndit = nd->begin(); ndit != nd->end(); ndit++) {
+		if(ndit->second->key == 'N') {
+			cout << "NOTE " << ndit->second->pitch << " " << ndit->second->volume << " " << ndit->second->start << " " << ndit->second->stop << endl;
+		}
+		else { 
+			cout << "DAMPER " << ndit->second->start << " " << ndit->second->stop << endl;
+		}
+	}
+	
 }
 
 void CS302_Midi::nd_to_el()
@@ -30,9 +74,9 @@ void CS302_Midi::nd_to_el()
 	int et;
 	for(ndit = nd->begin(); ndit != nd->end(); ndit++) {
 		if(rint(ndit->second->start * 480) != rint(ndit->second->stop * 480)) {
-			if(ndit->second->key == 78) {
+			if(ndit->second->key == 'N') {
 				ne = new Event;
-				ne->key = 79;
+				ne->key = 'O';
 				ne->time = ndit->second->start;
 				ne->v1 = ndit->second->pitch;
 				ne->v2 = ndit->second->volume;
@@ -45,7 +89,7 @@ void CS302_Midi::nd_to_el()
 				}
 				
 				ne = new Event;
-				ne->key = 70;
+				ne->key = 'F';
 				ne->time = ndit->second->stop;
 				ne->v1 = ndit->second->pitch;
 				et = 1;
@@ -59,7 +103,7 @@ void CS302_Midi::nd_to_el()
 			}
 			else {
 				ne = new Event;
-				ne->key = 68;
+				ne->key = 'D';
 				ne->time = ndit->second->start;
 				ne->v1 = 1;
 				et = 3;
@@ -71,7 +115,7 @@ void CS302_Midi::nd_to_el()
 				}
 				
 				ne = new Event;
-				ne->key = 68;
+				ne->key = 'D';
 				ne->time = ndit->second->stop;
 				ne->v1 = 0;
 				et = 2;
@@ -114,9 +158,4 @@ void CS302_Midi::nd_to_el()
 		}
 	}
 
-	//check against event file to double check the order of event types happening at the same timepoint
-	/*
-	cout << ndit->second->key << " " << ndit->second->pitch << " " << ndit->second->volume << " " 
-	<< ndit->second->start << " " << ndit->second->stop << endl;
-	*/
 }
