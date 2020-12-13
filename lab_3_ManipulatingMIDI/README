@@ -1,3 +1,22 @@
+This lab conerns converting data between two simplified MIDI file formats. Our job was the implement functions that copy data from either the data stucture that holds the 
+Event file data (EventList) or the Note file data (NDMap) to the other data structure.
+<h1>hi</h1>
+The file formats look as follows: 
+Event File- 
+ON time pitch volume
+OFF time pitch
+DAMPER time DOWN|UP
+
+
+CS302-Midi-Event-File
+ON 0 60 64
+ON 0 64 64
+ON 0 67 64
+DAMPER 0 DOWN
+OFF 480 60
+OFF   0 64
+OFF   0 67
+DAMPER 480 UP
 
 
 
