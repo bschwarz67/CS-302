@@ -28,9 +28,9 @@ NOTE 67 64 0 1
 DAMPER 0 2
 
 The lab is written in C++ 98 and compiled with g++. I implemented the el_to_nd() and nd_to_el() events in cs302-midi.cpp. Dr. Plank wrote everything else.
-The cs302-midi-base.cpp implements READ, which reads in data to the data structures from one of the two file formats; WRITE, which writes data from one of 
-the two data structures to its approprate file format; ADD_PAUSE, which adds a pause to a given file at a given start time and for a given duration, and SCALE, which 
-scales the speed by a given factor, making it play x times faster or slower depending on if the number is greater than 1 or between 0 and 1.
+The cs302-midi-base.cpp implements standard input commands: READ, which reads in data to the data structures from one of the two file formats; WRITE, which 
+writes data from one of the two data structures to its approprate file format; ADD_PAUSE, which adds a pause to a given file at a given start time and for a 
+given duration, and SCALE, which scales the speed by a given factor, making it play x times faster or slower depending on if the number is greater than 1 or between 0 and 1.
 
 Command line to test converting from note to event:
 make
