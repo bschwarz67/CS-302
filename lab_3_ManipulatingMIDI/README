@@ -1,29 +1,71 @@
-This lab conerns converting data between two simplified MIDI file formats. Our job was the implement functions that copy data from either the data stucture that holds the 
+This lab concerns converting data between two simplified MIDI file formats. Our job was the implement functions that copy data from either the data stucture that holds the 
 Event file data (EventList) or the Note file data (NDMap) to the other data structure.
-<h1>hi</h1>
+
 The file formats look as follows: 
-Event File- 
-ON time pitch volume
+
+Event File - 
+*time means time units have passed since the last event, units are 1/480 of a second
+ON time pitch volume 
 OFF time pitch
 DAMPER time DOWN|UP
 
-
+Ex:
 CS302-Midi-Event-File
 ON 0 60 64
-ON 0 64 64
-ON 0 67 64
 DAMPER 0 DOWN
 OFF 480 60
-OFF   0 64
-OFF   0 67
 DAMPER 480 UP
 
+Note File - 
+NOTE pitch volume starttime stoptime
+DAMPER starttime stoptime
 
+Ex:
+CS302-Midi-Note-File
+NOTE 60 64 0 1
+NOTE 64 64 0 1
+NOTE 67 64 0 1
+DAMPER 0 2
 
+The lab is written in C++ 98 and compiled with g++. I implemented the el_to_nd() and nd_to_el() events in cs302-midi.cpp. Dr. Plank wrote everything else.
+The cs302-midi-base.cpp implements READ, which reads in data to the data structures from one of the two file formats; WRITE, which writes data from one of 
+the two data structures to its approprate file format; ADD_PAUSE, which adds a pause to a given file at a given start time and for a given duration, and SCALE, which 
+scales the speed by a given factor, making it play x times faster or slower depending on if the number is greater than 1 or between 0 and 1.
 
+Command line to test converting from note to event:
+make
+./midi_tester | head -n 10
+READ
+test.txt
 
+should see -
+ON 481 61 74
+ON 0 57 68
+ON 5 69 71
+ON 0 45 62
+DAMPER 5 DOWN
+ON 0 33 68
+OFF 38 69
+OFF 15 45
+OFF 0 33
+OFF 9 61
 
+Command line to test converting from event to note:
+make
+./midi_tester | head -n 10
+READ
+test2.txt
 
-
+should see -
+NOTE 61 74 1.00208 1.15208
+NOTE 57 68 1.00208 1.15208
+NOTE 69 71 1.0125 1.10208
+NOTE 45 62 1.0125 1.13333
+NOTE 33 68 1.02292 1.13333
+DAMPER 1.02292 1.6125
+NOTE 52 60 1.60208 1.64375
+NOTE 45 55 1.60208 1.64375
+NOTE 57 60 1.60208 1.65208
+NOTE 64 62 1.60208 1.67292
 
 This lab is the intellectual property of Dr. James Plank in the UT Knoxville EECS department.
