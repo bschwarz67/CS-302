@@ -1,0 +1,18 @@
+problem statement for "ThreeTeleports":
+
+https://community.topcoder.com/stat?c=problem_statement&pm=11554&rd=14544
+
+problem solved with C++ 98
+
+to test:
+g++ -std=c++98 ThreeTeleports.cpp
+./a.out
+
+should see:
+3
+14
+14
+30
+117
+36
+0
