@@ -1,0 +1,20 @@
+problem statement for "PowerOfThreeEasy":
+
+https://community.topcoder.com/stat?c=problem_statement&pm=12952&rd=15837
+
+
+problem solved with C++ 98
+
+to test:
+g++ -std=c++98 PowerOfThreeEasy.cpp
+./a.out
+
+should see:
+Possible
+Possible
+Impossible
+Impossible
+Impossible
+Possible
+Possible
+Possible
