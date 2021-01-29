@@ -1,4 +1,6 @@
 #include <vector>
+#include <cstdlib>
+#include <cstdio>
 #include <iostream>
 using namespace std;
 
