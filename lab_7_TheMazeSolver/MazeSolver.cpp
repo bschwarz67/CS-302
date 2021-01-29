@@ -1,4 +1,6 @@
 //TODO change around that location of path maybe?
+#include <cstdlib>
+#include <cstdio>
 #include <map>
 #include <iostream>
 #include <vector>
