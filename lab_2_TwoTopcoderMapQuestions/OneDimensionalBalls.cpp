@@ -1,3 +1,5 @@
+#include <cstdlib>
+#include <cstdio>
 #include <vector>
 #include <set>
 #include <map>
