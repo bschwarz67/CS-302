@@ -14,8 +14,9 @@ class Enumeration {
 
 
     private:
-        void enumerateXs(int index);
-        void enumerateEs(int index, int esLeft);
+        void generateXs(int index);
+        void generateEs(int index, int esLeft);
+        void Print();
         int w;
         int e;
         string format;
@@ -43,9 +44,31 @@ Enumeration::Enumeration(int w, int e, string format) {
     this->format = format;
 }
 
-void Enumeration::enumerateEs(int index, int esLeft) {
+void Enumeration::Print() {
     int i, j;
     unsigned long long lineNumber;
+    if(format == "x") {
+            for(i = 0; i < matrix.size(); i++) {
+                for(j = 0; j < matrix.size(); j++) cout << matrix[i][j];
+                cout << endl;
+            }
+            cout << endl;
+        }
+    else {
+        for(i = 0; i < matrix.size(); i++) {
+            lineNumber = 0;
+            for(j = 0; j < matrix[i].size(); j++) {
+                if(matrix[i][j] == 'E' || matrix[i][j] == 'X') lineNumber |= (1ULL << j);
+            }
+            printf("%llx\n", lineNumber);
+        }
+        printf("\n");
+    }
+
+}
+
+void Enumeration::generateEs(int index, int esLeft) {
+    int i, j;
     if(esLeft == 0) {
         for(i = 0; i < eIndexes.size(); i++) {
             if(eIndexes[i] == 1) {
@@ -61,25 +84,7 @@ void Enumeration::enumerateEs(int index, int esLeft) {
             }
         }
         
-
-        if(format == "x") {
-            for(i = 0; i < matrix.size(); i++) {
-                for(j = 0; j < matrix.size(); j++) cout << matrix[i][j];
-                cout << endl;
-            }
-            cout << endl;
-        }
-        else {
-            for(i = 0; i < matrix.size(); i++) {
-                lineNumber = 0;
-                for(j = 0; j < matrix[i].size(); j++) {
-                    if(matrix[i][j] == 'E' || matrix[i][j] == 'X') lineNumber |= (1ULL << j);
-                }
-                printf("%llx\n", lineNumber);
-            }
-            printf("\n");
-        }
-
+        Print();    
 
         for(i = 0; i < matrix.size(); i++) {
             for(j = 0; j < matrix[i].size(); j++) {
@@ -92,20 +97,20 @@ void Enumeration::enumerateEs(int index, int esLeft) {
     else {
         if(esLeft > eIndexes.size() - index) return;
         eIndexes[index] = 1;
-        enumerateEs(index + 1, esLeft - 1);
+        generateEs(index + 1, esLeft - 1);
         eIndexes[index] = 0;
-        enumerateEs(index + 1, esLeft);
+        generateEs(index + 1, esLeft);
 
     }
 }
 
-void Enumeration::enumerateXs(int index) {
+void Enumeration::generateXs(int index) {
     int temp, i, j;
     if(index == xIndexes.size()) {
         for(i = 0; i < xIndexes.size(); i++) matrix[i][xIndexes[i]] = 'X';
         //for(i = 0; i < matrix.size(); i++) cout << matrix[i] << endl;
         //cout << endl;
-        enumerateEs(0, this->e);
+        generateEs(0, this->e);
         for(i = 0; i < matrix.size(); i++) {
             for(j = 0; j < matrix[i].size(); j++) {
                 matrix[i][j] = '.';
@@ -118,7 +123,7 @@ void Enumeration::enumerateXs(int index) {
             xIndexes[index] = xIndexes[i];
             xIndexes[i] = temp;
 
-            enumerateXs(index + 1);
+            generateXs(index + 1);
 
             temp = xIndexes[index];
             xIndexes[index] = xIndexes[i];
@@ -128,7 +133,7 @@ void Enumeration::enumerateXs(int index) {
 }
 
 void Enumeration::enumerate() {
-    enumerateXs(0);
+    generateXs(0);
 }
 
 
