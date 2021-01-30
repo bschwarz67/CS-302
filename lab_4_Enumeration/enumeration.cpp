@@ -1,4 +1,3 @@
-//TODO tweak second level enumeration a bit, what about resetting bit strings?, 
 #include <string>
 #include <vector>
 #include <iostream>
@@ -22,8 +21,6 @@ class Enumeration {
         string format;
         vector <string> matrix;
         vector <int> xIndexes;
-        vector <int> eIndexes;
-
 };
 
 
@@ -36,9 +33,7 @@ Enumeration::Enumeration(int w, int e, string format) {
     for(i = 0; i < w; i++) {
         xIndexes.push_back(i);
     }
-    for(i = 0; i < w * w; i++) {
-        eIndexes.push_back(0);
-    }
+    
     this->w = w;
     this->e = e;
     this->format = format;
@@ -70,36 +65,20 @@ void Enumeration::Print() {
 void Enumeration::generateEs(int index, int esLeft) {
     int i, j;
     if(esLeft == 0) {
-        for(i = 0; i < eIndexes.size(); i++) {
-            if(eIndexes[i] == 1) {
-                if(matrix[i / this->w][i % this->w] != 'X') matrix[i / this->w][i % this->w] = 'E';
-                else {
-                    for(i = 0; i < matrix.size(); i++) {
-                        for(j = 0; j < matrix[i].size(); j++) {
-                            if(matrix[i][j] == 'E') matrix[i][j] = '.';
-                        }
-                    }
-                    return;
-                }
-            }
-        }
-        
         Print();    
-
-        for(i = 0; i < matrix.size(); i++) {
-            for(j = 0; j < matrix[i].size(); j++) {
-                if(matrix[i][j] == 'E') matrix[i][j] = '.';
-            }
-        }
-        
-        
     }
+    else if((esLeft > ((w * w) - index))) return;
     else {
-        if(esLeft > eIndexes.size() - index) return;
-        eIndexes[index] = 1;
-        generateEs(index + 1, esLeft - 1);
-        eIndexes[index] = 0;
+        
+        if(matrix[index / this->w][index % this->w] != 'X') {
+            matrix[index / this->w][index % this->w] = 'E';
+            generateEs(index + 1, esLeft - 1);
+            matrix[index / this->w][index % this->w] = '.';
+        }
         generateEs(index + 1, esLeft);
+
+        
+        
 
     }
 }
@@ -108,8 +87,6 @@ void Enumeration::generateXs(int index) {
     int temp, i, j;
     if(index == xIndexes.size()) {
         for(i = 0; i < xIndexes.size(); i++) matrix[i][xIndexes[i]] = 'X';
-        //for(i = 0; i < matrix.size(); i++) cout << matrix[i] << endl;
-        //cout << endl;
         generateEs(0, this->e);
         for(i = 0; i < matrix.size(); i++) {
             for(j = 0; j < matrix[i].size(); j++) {
