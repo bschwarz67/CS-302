@@ -1,0 +1,32 @@
+This is the 4th lab done for the course. In this lab, we had to create a program that takes a command line of W, E, and 'x' or 'h' and generates every 
+possible WxW matrix configuration where there is only 1 X in each row and column, and there E Es, and the rest of the indexes are '.' 
+Each matrix should be printed according to the format specified by 'x' or 'h.' If 'x' each matrix is printed as described above, where each row of the
+matrix is on its own line, and there is a space in between matrices. If 'h', we generate a hexidecimal number for every row where the if the ith index of 
+the row is X or E, we maje the ith bit of the hexidecimal number 1. Each number is printed on its own line, and each set of numbers representing a matrix 
+is separated by a space.
+
+
+The lab was done in C++ 98
+
+command line: ./a.out W E FORMAT='x' or 'h'
+
+
+to test-
+g++ -std=c++98  enumeration.cpp
+./a.out 2 1 x
+
+should see:
+XE
+.X
+
+X.
+EX
+
+EX
+X.
+
+.X
+XE
+
+
+this lab is the intellectual property of Dr. James Plank in the UT- Knoxville department of computer science
