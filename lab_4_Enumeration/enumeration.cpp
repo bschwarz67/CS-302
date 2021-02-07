@@ -67,7 +67,7 @@ void Enumeration::Print() {
     }
     /* print each line of the matrix as a hexidecimal number where if the ith index of the line is X, E 
     then the ith bit of the hexidecimal number (lineNumber) is set to 1 and the rest of the bits are 0.
-     one number on each line, where each 'matrix' is separated by a space */
+    one number on each line, where each 'matrix' is separated by a space */
     else {
         for(i = 0; i < matrix.size(); i++) {
             lineNumber = 0;
