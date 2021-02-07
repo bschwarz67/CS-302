@@ -6,6 +6,8 @@
 
 using namespace std;
 
+/* class based around an algorithm that generates every possible WxW matrix configuration where there 
+is only 1 X in each row and column, and there E Es, and the rest of the indexes are '.' */
 class Enumeration {
     public:
         void enumerate(); //wrapper function for the two level enumeration
@@ -34,7 +36,7 @@ class Enumeration {
 /* assign class data based on the arguments */
 Enumeration::Enumeration(int w, int e, string format) {
 
-    /* generate initial w*w matrix */
+    /* generate initial w*w matrix of '.' */
     string line (w, '.');
     int i;
     for(i = 0; i < w; i++) {
@@ -63,7 +65,7 @@ void Enumeration::Print() {
             cout << endl;
     }
     /* print each line of the matrix is a hexidecimal number where if the ith index of the line is X, E 
-    then the ith bit of the hexidecimal number (linenNumber) is shifted, one number on each line,
+    then the ith bit of the hexidecimal number (lineNumber) is shifted, one number on each line,
     where each 'matrix' is separated by a space */
     else {
         for(i = 0; i < matrix.size(); i++) {
@@ -78,11 +80,12 @@ void Enumeration::Print() {
 
 }
 
-/* enumerate every possible matrix where there are e Es and 1 X in each row and column 
-using n choose k enumeration on previously generated matrices containing Xs */
+/* enumerate every possible matrix where there are e Es and 1 X in each row and column
+with the rest of the indexes being '.' using n choose k enumeration on previously 
+generated matrices containing Xs */
 void Enumeration::generateEs(int index, int esLeft) {
     int i, j;
-    /* base case, whe have no more Es left to palce in the matrix, we print the matrix */
+    /* base case, whe have no more Es left to place in the matrix, we print the matrix */
     if(esLeft == 0) {
         Print();    
     }
@@ -102,7 +105,7 @@ void Enumeration::generateEs(int index, int esLeft) {
 }
 
 /* enumerate every matrix where each row and each column contains exactly 1 X using 
-recursive permutation algorithm, then call recursvie function to put the Es in to the matrix */
+recursive permutation algorithm, then call recursvie function to puts the Es in to the matrix */
 void Enumeration::generateXs(int index) {
     int temp, i, j;
     /* if we reached the end of xIndexes, put Xs into the matrix where for every ith number in 
