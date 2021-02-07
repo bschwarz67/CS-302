@@ -110,7 +110,7 @@ recursive permutation algorithm, then call recursvie function to puts the Es in 
 void Enumeration::generateXs(int index) {
     int temp, i, j;
     /* if we reached the end of xIndexes, put Xs into the matrix where for every ith number in 
-    xIndexes an X goes into the ith row of the matrix at the xIndexes[i]th column */
+    xIndexes an X goes into the ith row of the matrix at the xIndexes[i] column */
     if(index == xIndexes.size()) {
         for(i = 0; i < xIndexes.size(); i++) matrix[i][xIndexes[i]] = 'X';
         generateEs(0, this->e);
