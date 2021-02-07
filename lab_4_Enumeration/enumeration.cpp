@@ -24,10 +24,11 @@ class Enumeration {
                         //matrix is on its own line and each matrix is separated by a space from another
                         //'h' = as numbers where each row computes a hexidecimal number, where
                         //the if the ith index in the row is X or E, the ith bit in the hexidecimal
-                        //number is shifted. 1 number per line, where each set of numbers is separated
+                        //number is set to 1 and the rest of the bits are 0. 
+                        //1 number per line, where each set of numbers is separated
                         //by a space
                         
-        vector <string> matrix; //holds the current state of the matri being generated
+        vector <string> matrix; //holds the current state of the matrix being generated
         vector <int> xIndexes;  //vector that represents X positions in the matrix, where 
                                 //the number represents the column in the matrix and the 
                                 //index where the number is represents the row.
@@ -64,9 +65,9 @@ void Enumeration::Print() {
             }
             cout << endl;
     }
-    /* print each line of the matrix is a hexidecimal number where if the ith index of the line is X, E 
-    then the ith bit of the hexidecimal number (lineNumber) is shifted, one number on each line,
-    where each 'matrix' is separated by a space */
+    /* print each line of the matrix as a hexidecimal number where if the ith index of the line is X, E 
+    then the ith bit of the hexidecimal number (lineNumber) is set to 1 and the rest of the bits are 0.
+     one number on each line, where each 'matrix' is separated by a space */
     else {
         for(i = 0; i < matrix.size(); i++) {
             lineNumber = 0;
@@ -85,15 +86,15 @@ with the rest of the indexes being '.' using n choose k enumeration on previousl
 generated matrices containing Xs */
 void Enumeration::generateEs(int index, int esLeft) {
     int i, j;
-    /* base case, whe have no more Es left to place in the matrix, we print the matrix */
+    /* base case, we have no more Es left to place in the matrix, we print the matrix */
     if(esLeft == 0) {
         Print();    
     }
     /* if where reach a point where there are more Es to enumerate than indexes left we return */
     else if((esLeft > ((w * w) - index))) return;
-    /* in all other cases, we perform a stepwise enumeration, first we add an E at the current index
-    if it is a valid index to add it at, and continue permuting, later we remove the E at index
-    and permute this matrix as well. */
+    /* in all other cases call the recursive function to continue the enumeration at the next index,
+    both after changing to E at the current index if it doesnt have an X, and not changing to E.
+    */
     else { 
         if(matrix[index / this->w][index % this->w] != 'X') {
             matrix[index / this->w][index % this->w] = 'E';
