@@ -22,7 +22,7 @@ class Superball {
     vector <int> colors;
     Disjoint_Set d;
     void play_superball();
-    void analyze_superball_rec(int set, int color, int coord);
+    int analyze_superball_rec(int set, int color, int coord, int has_scoring_tile);
     void swap(int i, int j);
     int number_of_empty_cells();
     int can_score();
@@ -46,8 +46,10 @@ int Superball::can_score() {
   return 0;
 }
 
-void Superball::analyze_superball_rec(int set, int color, int coord){
+int Superball::analyze_superball_rec(int set, int color, int coord, int has_scoring_tile){
   
+  if(goals[coord] == 1) has_scoring_tile = 1;
+
   int q_root;
   int c_root;
   
@@ -57,17 +59,17 @@ void Superball::analyze_superball_rec(int set, int color, int coord){
     c_root = d.Find(set);
     if(q_root != c_root) {
       int new_id = d.Union(c_root, q_root);
-      analyze_superball_rec(new_id, color, coord - c);
+      return analyze_superball_rec(new_id, color, coord - c, has_scoring_tile);
     }
   }
 
   //bottom
-  if(coord + c <= r*c - 1 && board[coord + c] == color) {
+  if(coord + c <= r*c - 1 && board[coord + c] == has_scoring_tile) {
     q_root = d.Find(coord + c);
     c_root = d.Find(set);
     if(q_root != c_root) {
       int new_id = d.Union(c_root, q_root);
-      analyze_superball_rec(new_id, color, coord + c);
+      return analyze_superball_rec(new_id, color, coord + c, has_scoring_tile);
     }
   }
 
@@ -77,7 +79,7 @@ void Superball::analyze_superball_rec(int set, int color, int coord){
     c_root = d.Find(set);
     if(q_root != c_root) {
       int new_id = d.Union(c_root, q_root);
-      analyze_superball_rec(new_id, color, coord - 1);
+      return analyze_superball_rec(new_id, color, coord - 1, has_scoring_tile);
     }
   }
   //right
@@ -86,9 +88,10 @@ void Superball::analyze_superball_rec(int set, int color, int coord){
     c_root = d.Find(set);
     if(q_root != c_root) {
       int new_id = d.Union(c_root, q_root);
-      analyze_superball_rec(new_id, color, coord + 1);
+      return analyze_superball_rec(new_id, color, coord + 1, has_scoring_tile);
     }
   }
+  return has_scoring_tile;
 }
 
 
@@ -101,7 +104,7 @@ void Superball::play_superball(){
   //analyse the board that is piped into the program
   d.Initialize(r*c);
   for(int i = 0; i < board.size(); i++) {
-    if(board[i] != '.' && board[i] != '*') analyze_superball_rec(i, board[i], i);
+    if(board[i] != '.' && board[i] != '*') analyze_superball_rec(i, board[i], i, 0);
   }
 
   //check for fewer than 5 places and unable to score
@@ -145,18 +148,13 @@ void Superball::play_superball(){
           swap(i,j);
           swap_score = 0;
           for(int k = 0; k < goals.size(); k++) {
-            if(goals[k] == 1 && board[k] != '*' && d.Get_Sizes()->at(d.Find(k)) == 1) {
-              analyze_superball_rec(k, board[k], k);
+            if(board[k] != '.' && board[k] != '*' && d.Get_Sizes()->at(d.Find(k)) == 1) {
+              int has_scoring_tile = analyze_superball_rec(k, board[k], k, 0);
               int size_of_set = d.Get_Sizes()->at(d.Find(k));
-              if(size_of_set >= 5) swap_score += colors[board[k]] * size_of_set * 3;
-              else swap_score += colors[board[k]] * size_of_set * 2;
+              if(size_of_set >= 5 && has_scoring_tile) swap_score += colors[board[k]] * size_of_set * 3;
+              else if(has_scoring_tile) swap_score += colors[board[k]] * size_of_set * 2;
+              else swap_score += colors[board[k]] * size_of_set * 1;
             }
-            
-            if(goals[k] == 0 && board[k] != '.' && d.Get_Sizes()->at(d.Find(k)) == 1) {
-              analyze_superball_rec(k, board[k], k);
-              swap_score += colors[board[k]] * d.Get_Sizes()->at(d.Find(k)) * 1;
-            }
-            
           }
           swap_score /= d.Get_Set_Ids()->size();
           if(swap_score > best_swap_score) {
