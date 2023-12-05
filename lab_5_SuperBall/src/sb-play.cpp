@@ -59,7 +59,7 @@ int Superball::analyze_superball_rec(int set, int color, int coord, int has_scor
     c_root = d.Find(set);
     if(q_root != c_root) {
       int new_id = d.Union(c_root, q_root);
-      return analyze_superball_rec(new_id, color, coord - c, has_scoring_tile);
+      has_scoring_tile = analyze_superball_rec(new_id, color, coord - c, has_scoring_tile);
     }
   }
 
@@ -69,7 +69,7 @@ int Superball::analyze_superball_rec(int set, int color, int coord, int has_scor
     c_root = d.Find(set);
     if(q_root != c_root) {
       int new_id = d.Union(c_root, q_root);
-      return analyze_superball_rec(new_id, color, coord + c, has_scoring_tile);
+      has_scoring_tile = analyze_superball_rec(new_id, color, coord + c, has_scoring_tile);
     }
   }
 
@@ -79,7 +79,7 @@ int Superball::analyze_superball_rec(int set, int color, int coord, int has_scor
     c_root = d.Find(set);
     if(q_root != c_root) {
       int new_id = d.Union(c_root, q_root);
-      return analyze_superball_rec(new_id, color, coord - 1, has_scoring_tile);
+      has_scoring_tile = analyze_superball_rec(new_id, color, coord - 1, has_scoring_tile);
     }
   }
   //right
@@ -88,7 +88,7 @@ int Superball::analyze_superball_rec(int set, int color, int coord, int has_scor
     c_root = d.Find(set);
     if(q_root != c_root) {
       int new_id = d.Union(c_root, q_root);
-      return analyze_superball_rec(new_id, color, coord + 1, has_scoring_tile);
+      has_scoring_tile = analyze_superball_rec(new_id, color, coord + 1, has_scoring_tile);
     }
   }
   return has_scoring_tile;
@@ -122,7 +122,7 @@ void Superball::play_superball(){
 
   }
 
-  else if(number_of_empty_cells() < 5 && can_score() == 1) {
+  else if(number_of_empty_cells() < 20 && can_score() == 1) {
     int biggest_score = 0;
     int score = 0;
     int scored_cell = 0;
