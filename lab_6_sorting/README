@@ -1,0 +1,18 @@
+lab 6 for the Dr. James Plank's 302 course, basically the implementation of quicksort and mergesort to his specifications, with output to
+his specifications.
+
+to compile:
+make clean ; make lab
+
+to run:
+{bin/quick_2_lab_sort | bin/merge_1_lab_sort} {size} {iterations} {seed} {double-check(yes|no)} {print(yes|no)}
+
+output is described thoroughly in https://web.eecs.utk.edu/~jplank/plank/classes/cs302/Labs/Lab6/, but basically, quick sort according to the specifications should print the start index, subarray size, array every recursive call before sorting around the pivot. it should print start index, subarray size, index chosen for pivot, array after the subarray has been sorted around the pivot.
+
+merge sort should print index, subarray size, array on every call to the recursive function as long as the size of the subarray being sorted is > 1. Finally for both programs, the sorted array is printed after the recursive call.
+
+mergesort - piping to  | awk -f ms.awk > msex.html
+
+quicksort - piping to  | awk -f qs2.awk > msex.html
+
+prints formatted output to an html file that highlights the subarray being sorted in the outputs already discussed.
