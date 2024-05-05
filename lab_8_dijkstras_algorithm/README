@@ -1,0 +1,18 @@
+lab 8 done for Dr. Plank's CS-302 Data Structures and Algorithms 2 class at UT Knoxville. This lab was to implement a program that reads a graph 
+representing a network of streets and intersections from a file and use Dijkstra's algorithm to find the shortest path from intersection (0,0) to 
+intersection (largest_street#, largest_avenue#). Three slightly different versions of Dijkstra's algorithm are implemented depending on time spent 
+at the light in each intersection.
+
+ full lab description is here: https://web.eecs.utk.edu/~jplank/plank/classes/cs302/Labs/Lab8/
+
+ city_map_base.cpp and city_map.hpp were written by Dr. Plank.
+
+ to compile: run make in home directory for the lab
+ 
+ From lab writeup:
+ "
+ command line: city_map none|best|worst|avg time|print|jgraph - map on standard input
+ time -- This simply prints out the time of the fastest path. If none was specified, this prints zero.
+ print -- This prints out all of the nodes of the graph, and then the path.
+"
+ jgraph doesnt work in my implementation because I couldnt get the binary that Dr. Plank wrote.
