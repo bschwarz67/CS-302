@@ -38,16 +38,12 @@ class Graph {
   public:
     Graph(list<string> die_string, list <string>::iterator die_string_it, string word);
     ~Graph();
-    string Verbose;                     /* G = print graph at each step.
-                                            P = print augmenting paths at each step.
-                                            B = Basic: print graph at beginning and end. */
+    
     void Can_Spell_Word();                 
-    //int Find_Augmenting_Path();         /* Find and process an augmenting path. */
 
     bool Find_Shortest_Path(Node *n);                  /* BFS to find an augmenting path - returns success. */
     vector <Edge *> Path;               /* The augmenting path. */
 
-    int NPaths;                         /* Number of paths for the calculation. */
     int MaxCap;                         /* Maximum edge capacity */
     int Cap;
 
@@ -78,28 +74,25 @@ Graph::Graph(list<string> die_string, list <string>::iterator die_string_it, str
   MaxCap = 4;
   Word = word;
 
-
   //create source
   n = new Node;
-  n->name = "0";
+  n->name = "-1";
   n->val = "SOURCE";
   n->visited = 0;
   Nodes.push_back(n);
   Source = n;
-  f++;
 
 
 
   //create sink
   n = new Node;
-  n->val = "SINK";
-  ss << (die_string.size() + word.size() + 1);
-  n->name = ss.str();
+  ss << (die_string.size() + word.size());
+  n->name = "-2";
   ss.clear();
   ss.str("");
+  n->val = "SINK";
   n->visited = 0;
   Sink = n;
-
 
 
   for (die_string_it = die_string.begin(); die_string_it != die_string.end(); die_string_it++) {
@@ -223,14 +216,7 @@ Graph::Graph(list<string> die_string, list <string>::iterator die_string_it, str
   ss.str("");
   Nodes.push_back(Sink);
 
-
-
-  for(i = 0; i < Nodes.size(); i++) {
-    //cout << Nodes[i]->name << " " << Nodes[i]->val << endl;
-    //for(j = 0; j < Nodes[i]->adj.size(); j++) cout << Nodes[i]->adj[j]->n1->val << " " << Nodes[i]->adj[j]->name << " " << Nodes[i]->adj[j]->n2->val << " ";
-    //cout << endl;
-  }
-
+  //for(int i = 0; i < Nodes.size(); i++) cout << Nodes[i]->name << " " <<  Nodes[i]->val << endl;
 }
 
 Graph::~Graph()
@@ -248,8 +234,6 @@ void Graph::Can_Spell_Word() {
 
 
   while(Find_Shortest_Path(Source)) {
-    
-
     for(int i = 0; i < Path.size(); i++) {
       if(Path[i]->reverse->flow > 0) {
         if(Path[i]->reverse->flow >= Cap) {
@@ -276,23 +260,19 @@ void Graph::Can_Spell_Word() {
   }
 
   
-  vector<int> answer (Nodes.size() - Die.size() - 2, -1);
-  cout << "answer size" << answer.size() << endl;
+  vector<int> answer (Nodes.size() - Die.size() - 2, -2);
   for(int i = 0; i < Edges.size(); i++) {
     
-    if(Edges[i]->n1->val != "SOURCE" && Edges[i]->n2->val != "SINK" && Edges[i]->flow > 0){
-            
-      ss << Edges[i]->n2->name;
-      ss >> j;
-      ss.clear();
-      ss.str("");
-      ss << Edges[i]->n1->name;
-      ss >> k;
-      ss.clear();
-      ss.str("");
-      
-      //cout << Edges[i]->name << endl;
-      answer[j - Die.size() - 1] = k - 1;
+    ss << Edges[i]->n1->name;
+    ss >> j;
+    ss.clear();
+    ss.str("");
+    ss << Edges[i]->n2->name;
+    ss >> k;
+    ss.clear();
+    ss.str("");
+    if(Edges[i]->n1->val != "SOURCE" && Edges[i]->n2->val != "SINK" && Edges[i]->flow > 0 && j < k){
+      answer[k - Die.size()] = j;
     } 
   }
   
@@ -302,9 +282,6 @@ void Graph::Can_Spell_Word() {
   }
   
   cout << Word << endl;
-
-
-
   return;
 }
 
@@ -341,34 +318,10 @@ bool Graph::Find_Shortest_Path(Node *n) {
       if(Cap > n->backedge->residual) Cap = n->backedge->residual;
       n = n->backedge->n1;
     }
-    return true;
-    
+    return true; 
   }
-
-  
   return false;
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 int main(int argc, char **argv)
@@ -398,10 +351,5 @@ int main(int argc, char **argv)
     delete G;
   }
   fs2.close();
-
-
-  
-
-
   return 0;
 }
