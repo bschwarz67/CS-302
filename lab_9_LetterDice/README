@@ -1,0 +1,18 @@
+lab 9 done for Dr. Plank's CS-302 Data Structures and Algorithms 2 class at UT Knoxville. The goal of this lab was to write a program that takes two files as inputs, a file that contains a list of 'dice' (strings of upper case letters with n 'sides' on the dice equivalent to string length n) and words (strings of upper case letters). The program should then indicate in output in the specified format if each word in the word file could be spelled using each dice in the dice file at most once. It should also indicate the spelling with the dice.
+
+This problem is solved with use of a graph made of nodes representing Dice and Letters of each word, a Source and a Sink node. The Edmonds-Karp implementation of the Ford-Fulkerson method was used to find the maximum flow of this graph. Once the maximum flow is found, the ability of the Dice to spell each Word by the rules specified is tested by inspecting the flow graph to see if there is an edge with flow from each Letter node to the Sink. The mapping/spelling of each Dice to each Letter is found by inspecting the Edge list as well. The graph algorithm for finding paths at each step of the Edmonds-Karp implementation is a Breadth First Search that minimizes path length.
+
+compile: g++ -o worddice -Iinclude -Wall -Wextra worddice.cpp
+run: ./worddice {Dice .txt file} {Words .txt file}
+
+see files in the directory for examples of .txt files
+
+to test: 
+
+./worddice Dice2.txt Words2.txt
+Cannot spell DOG
+Cannot spell PIG
+Cannot spell CAT
+1,2: DO
+1,0,2: TEE
+2,0,1: FEE
