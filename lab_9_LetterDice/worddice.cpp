@@ -234,6 +234,8 @@ void Graph::Can_Spell_Word() {
 
 
   while(Find_Shortest_Path(Source)) {
+
+ 
     for(int i = 0; i < Path.size(); i++) {
       if(Path[i]->reverse->flow > 0) {
         if(Path[i]->reverse->flow >= Cap) {
@@ -249,7 +251,10 @@ void Graph::Can_Spell_Word() {
       }
       Path[i]->residual -= Cap;
       Path[i]->reverse->residual += Cap;
+
     }
+
+    
 
   }
   for(int i = 0; i < Edges.size(); i++) {
@@ -258,6 +263,8 @@ void Graph::Can_Spell_Word() {
       return;
     } 
   }
+
+  
 
   
   vector<int> answer (Nodes.size() - Die.size() - 2, -2);
