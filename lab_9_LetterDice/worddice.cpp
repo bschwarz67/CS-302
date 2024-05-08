@@ -8,6 +8,7 @@
 #include <string>
 #include <list>
 #include <sstream>
+#include <queue>
 using namespace std;
 
 
@@ -17,6 +18,8 @@ class Node {
     string val;                    
     vector <class Edge *> adj;      // The node's adjacency list in the residual graph.
     int visited;                    // A visited field for depth-first search.
+    int distance;
+    Edge *backedge;
 };
 
 class Edge {
@@ -27,59 +30,354 @@ class Edge {
     Edge *reverse;                  // The reverse edge, for processing the residual graph
     int original;                   // The original edge capacity.
     int residual;                   // The edge capacity in the residual graph.
+    int flow;
 };
 
 
 class Graph {
   public:
-     Graph(string word);
-     ~Graph();
-     string Verbose;                     /* G = print graph at each step.
+    Graph(list<string> die_string, list <string>::iterator die_string_it, string word);
+    ~Graph();
+    string Verbose;                     /* G = print graph at each step.
                                             P = print augmenting paths at each step.
                                             B = Basic: print graph at beginning and end. */
-     //int MaxFlow();                      /* Do the max flow calculation for the graph. */
-     //int Find_Augmenting_Path();         /* Find and process an augmenting path. */
+    void Can_Spell_Word();                 
+    //int Find_Augmenting_Path();         /* Find and process an augmenting path. */
 
-     //bool DFS(Node *n);                  /* DFS to find an augmenting path - returns success. */
-     vector <Edge *> Path;               /* The augmenting path. */
+    bool Find_Shortest_Path(Node *n);                  /* BFS to find an augmenting path - returns success. */
+    vector <Edge *> Path;               /* The augmenting path. */
 
-     int NPaths;                         /* Number of paths for the calculation. */
-     int MaxCap;                         /* Maximum edge capacity */
+    int NPaths;                         /* Number of paths for the calculation. */
+    int MaxCap;                         /* Maximum edge capacity */
+    int Cap;
 
-     Node *Source;                       /* Source and sink node. */
-     Node *Sink;
+    Node *Source;                       /* Source and sink node. */
+    Node *Sink;
 
-     vector <Node *> Nodes;              /* All of the nodes. */
-     vector <Edge *> Edges;              /* All of the edges. */
+    vector <Node *> Nodes;              /* All of the nodes. */
+    vector <Edge *> Edges;              /* All of the edges. */
+    list<Node*> Die; 
+    list <Node*>::iterator Dieit;
+    queue <Node*> spqueue;
+    vector <Node *> Answer;
+    string Word;
+
 };
 
 
-Graph::Graph(string word)
+Graph::Graph(list<string> die_string, list <string>::iterator die_string_it, string word)
 {
 
-}
-
-Graph::~Graph()
-{
-  int i;
-
-  
-}
-
-int main(int argc, char **argv)
-{
-  Graph *G;
   Node *n;
   Node *m;
   Edge *e, *g;
   int f = 0;
   int a[256];
   int i, j;
+  stringstream ss;
+  MaxCap = 4;
+  Word = word;
+
+
+  //create source
+  n = new Node;
+  n->name = "0";
+  n->val = "SOURCE";
+  n->visited = 0;
+  Nodes.push_back(n);
+  Source = n;
+  f++;
+
+
+
+  //create sink
+  n = new Node;
+  n->val = "SINK";
+  ss << (die_string.size() + word.size() + 1);
+  n->name = ss.str();
+  ss.clear();
+  ss.str("");
+  n->visited = 0;
+  Sink = n;
+
+
+
+  for (die_string_it = die_string.begin(); die_string_it != die_string.end(); die_string_it++) {
+    n = new Node;
+    ss << f;
+    n->name = ss.str();
+    ss.clear();
+    ss.str("");
+    n->val = *die_string_it;
+    n->visited = 0;
+    f++;
+    Die.push_back(n);
+    Nodes.push_back(n);
+
+    e = new Edge();
+    e->name = Source->name + "->" + n->name;
+    e->n1 = Source;
+    e->n2 = n;
+    e->original = 1;
+    e->residual = 1;
+    e->flow = 0;
+    
+
+    g = new Edge();
+    g->name = n->name + "->" + Source->name;
+    g->n1 = n;
+    g->n2 = Source;
+    g->original = 0;
+    g->residual = 0;
+    g->flow = 0;
+
+    e->reverse = g;
+    g->reverse = e;
+    
+
+    Source->adj.push_back(e);
+    n->adj.push_back(g);
+
+    Edges.push_back(e);
+    Edges.push_back(g);
+
+  }
+
+
+  
+  
+  for(i = 0; i < word.size(); i++) {
+    n = new Node;
+    ss << f;
+    n->name = ss.str();
+    ss.clear();
+    ss.str("");
+    n->val = word[i];
+    n->visited = 0;
+    Nodes.push_back(n);
+    f++;
+    
+    //
+    for (Dieit = Die.begin(); Dieit != Die.end(); Dieit++) {
+      for(j = 0; j < 256; j++) a[j] = 0;
+      m = *Dieit;
+      if(m->val.find(word[i]) != string::npos && a[word[i]] == 0) {
+        e = new Edge();
+        e->name = m->name + "->" + n->name;
+        e->n1 = m;
+        e->n2 = n;
+        e->original = 1;
+        e->residual = 1;
+        e->flow = 0;
+
+        g = new Edge();
+        g->name = n->name + "->" + m->name;
+        g->n1 = n;
+        g->n2 = m;
+        g->original = 0;
+        g->residual = 0;
+        g->flow = 0;
+
+        e->reverse = g;
+        g->reverse = e;
+
+        m->adj.push_back(e);
+        n->adj.push_back(g);
+
+        Edges.push_back(e);
+        Edges.push_back(g);
+
+        a[word[i]] = 1;
+      }
+    }
+      //
+      
+    e = new Edge();
+    e->name = n->name + "->" + Sink->name;
+    e->n1 = n;
+    e->n2 = Sink;
+    e->original = 1;
+    e->residual = 1;
+    e->flow = 0;
+
+    g = new Edge();
+    g->name = Sink->name + "->" + n->name;
+    g->n1 = Sink;
+    g->n2 = n;
+    g->original = 0;
+    g->residual = 0;
+    g->flow = 0;
+
+    e->reverse = g;
+    g->reverse = e;
+    
+    n->adj.push_back(e);
+    Sink->adj.push_back(g);
+
+    Edges.push_back(e);
+    Edges.push_back(g);
+  }
+
+  
+  ss.clear();
+  ss.str("");
+  Nodes.push_back(Sink);
+
+
+
+  for(i = 0; i < Nodes.size(); i++) {
+    //cout << Nodes[i]->name << " " << Nodes[i]->val << endl;
+    //for(j = 0; j < Nodes[i]->adj.size(); j++) cout << Nodes[i]->adj[j]->n1->val << " " << Nodes[i]->adj[j]->name << " " << Nodes[i]->adj[j]->n2->val << " ";
+    //cout << endl;
+  }
+
+}
+
+Graph::~Graph()
+{
+  int i;
+  for (i = 0; i < Nodes.size(); i++) delete Nodes[i];
+  for (i = 0; i < Edges.size(); i++) delete Edges[i];
+  
+}
+
+void Graph::Can_Spell_Word() {
+  stringstream ss;
+  int j;
+  int k;
+
+
+  while(Find_Shortest_Path(Source)) {
+    
+
+    for(int i = 0; i < Path.size(); i++) {
+      if(Path[i]->reverse->flow > 0) {
+        if(Path[i]->reverse->flow >= Cap) {
+          Path[i]->reverse->flow -= Cap;
+        }
+        else {
+          Path[i]->flow += Cap - Path[i]->reverse->flow;
+          Path[i]->reverse->flow = 0;
+        }
+      }
+      else {
+        Path[i]->flow += Cap;
+      }
+      Path[i]->residual -= Cap;
+      Path[i]->reverse->residual += Cap;
+    }
+
+  }
+  for(int i = 0; i < Edges.size(); i++) {
+    if(Edges[i]->n2->val == "SINK" && Edges[i]->flow == 0){
+      cout << "Cannot spell " << Word << endl;
+      return;
+    } 
+  }
+
+  
+  vector<int> answer (Nodes.size() - Die.size() - 2, -1);
+  cout << "answer size" << answer.size() << endl;
+  for(int i = 0; i < Edges.size(); i++) {
+    
+    if(Edges[i]->n1->val != "SOURCE" && Edges[i]->n2->val != "SINK" && Edges[i]->flow > 0){
+            
+      ss << Edges[i]->n2->name;
+      ss >> j;
+      ss.clear();
+      ss.str("");
+      ss << Edges[i]->n1->name;
+      ss >> k;
+      ss.clear();
+      ss.str("");
+      
+      //cout << Edges[i]->name << endl;
+      answer[j - Die.size() - 1] = k - 1;
+    } 
+  }
+  
+  for(int i = 0; i < answer.size(); i++) {
+    if(i != answer.size() - 1) cout << answer[i] << ",";
+    else cout << answer[i] << ": ";
+  }
+  
+  cout << Word << endl;
+
+
+
+  return;
+}
+
+bool Graph::Find_Shortest_Path(Node *n) {
+
+  Nodes[0]->distance = 0;
+  Nodes[0]->backedge = NULL;
+  for(int i = 1; i < Nodes.size(); i++) {
+    Nodes[i]->distance = -1;
+    Nodes[i]->backedge = NULL;
+  }
+  spqueue.push(n);
+  while(!spqueue.empty()) {
+    n = spqueue.front();
+    spqueue.pop();
+
+
+    for(int i = 0; i < n->adj.size(); i++) {
+      if(n->adj[i]->n2->distance == -1 && n->adj[i]->residual > 0) {
+        n->adj[i]->n2->distance = n->distance + 1;
+        n->adj[i]->n2->backedge = n->adj[i];
+        spqueue.push(n->adj[i]->n2);
+      }
+    }
+  }
+
+  
+  if(Sink->distance != -1) {
+    Path.clear();
+    n = Sink;
+    Cap = MaxCap;
+    while(n->backedge != NULL) {
+      Path.push_back(n->backedge);
+      if(Cap > n->backedge->residual) Cap = n->backedge->residual;
+      n = n->backedge->n1;
+    }
+    return true;
+    
+  }
+
+  
+  return false;
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int main(int argc, char **argv)
+{
+  Graph *G;
+  
+  list<string> die_string; 
+  list <string>::iterator die_string_it;
   string l;
-  string c;
-  ostringstream ss;
-  list<Node*> die; 
-  list <Node*>::iterator dieit;
   
 
   if (argc > 3) {
@@ -88,108 +386,19 @@ int main(int argc, char **argv)
   }
 
   fstream fs (argv[1], fstream::in);
-  ss.clear();
-  ss.str("");
-
-  n = new Node;
-  n->name = "0";
-  n->val = "SOURCE";
-  n->visited = 0;
-  die.push_back(n);
-  f++;
-
-
-  
   while (getline(fs, l)) {
-    n = new Node;
-    ss << f;
-    n->name = ss.str();
-    ss.clear();
-    ss.str("");
-    n->val = l;
-    n->visited = 0;
-    f++;
-    die.push_back(n);
+    die_string.push_back(l);
   }
   fs.close();
-
   fstream fs2 (argv[2], fstream::in);
 
   while (getline(fs2, l)) {
-    G = new Graph(l);
-    
-    for (dieit = die.begin(); dieit != die.end(); dieit++) {
-      n = *dieit;
-      G->Nodes.push_back(n);
-    }
-
-    f = G->Nodes.size();
-    
-    for(i = 0; i < l.size(); i++) {
-      n = new Node;
-      ss << f;
-      n->name = ss.str();
-      ss.clear();
-      ss.str("");
-      n->val = l[i];
-      n->visited = 0;
-      G->Nodes.push_back(n);
-      f++;
-      
-       //
-      for (dieit = die.begin(); dieit != die.end(); dieit++) {
-        for(j = 0; j < 256; j++) a[j] = 0;
-        m = *dieit;
-        if(m->name != "0" && m->val.find(l[i]) != string::npos && a[l[i]] == 0) {
-
-
-          e = new Edge();
-          e->name = m->name + "->" + n->name;
-          e->n1 = m;
-          e->n2 = n;
-          e->original = 1;
-          e->residual = 1;
-          m->adj.push_back(e);
-
-          g = new Edge();
-          g->name = n->name + "->" + m->name;
-          g->n1 = n;
-          g->n2 = m;
-          g->original = 0;
-          g->residual = 0;
-          e->reverse = g;
-
-          a[l[i]] = 1;
-        }
-      }
-       //
-    }
-    
-
-    n = new Node;
-    ss << f;
-    n->name = ss.str();
-    ss.clear();
-    ss.str("");
-    n->val = "SINK";
-    n->visited = 0;
-    G->Nodes.push_back(n);
-
-
-
-    for(i = 0; i < G->Nodes.size(); i++) {
-      cout << G->Nodes[i]->name << " " << G->Nodes[i]->val << endl;
-      for(j = 0; j < G->Nodes[i]->adj.size(); j++) cout << G->Nodes[i]->adj[j]->n1->val << " " << G->Nodes[i]->adj[j]->name << " " << G->Nodes[i]->adj[j]->n2->val << " ";
-      cout << endl;
-    }
-    cout << "--" << endl;
-    for (i = 0; i < G->Nodes.size(); i++)  G->Nodes[i]->adj.clear();
-    for (i = die.size(); i < G->Nodes.size(); i++) delete G->Nodes[i];
-    for (i = 0; i < G->Edges.size(); i++) delete G->Edges[i];
+    G = new Graph(die_string, die_string_it, l);
+    G->Can_Spell_Word();
     delete G;
-
   }
   fs2.close();
+
 
   
 
