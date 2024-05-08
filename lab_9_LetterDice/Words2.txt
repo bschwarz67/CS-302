@@ -1,1 +1,6 @@
-RAGE
+DOG
+PIG
+CAT
+DO
+TEE
+FEE
