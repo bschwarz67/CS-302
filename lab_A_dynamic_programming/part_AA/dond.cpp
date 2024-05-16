@@ -117,12 +117,29 @@ int main(int argc, char **argv) {
 		exit(1);
 	}
 
+	if(d.last_roll < -1 || d.last_roll > d.s - 1) {
+		cerr << "dond s t last-roll\n";
+		exit(1);
+	}
+
+	if(d.s <= 0) {
+		cerr << "dond s t last-roll\n";
+		exit(1);
+	}
+
+	if(d.t <= 0) {
+		cerr << "dond s t last-roll\n";
+		exit(1);
+	}
+
 	if(d.s == 1) {
-		cout << 0.0 << endl; 
+
+		if(d.last_roll == -1 && d.t == 1) cout << 1;
+		else cout << 0.0 << endl; 
 		return 0;
 	}
 	if(d.s == 2) {
-		cout << 0.0 << endl; 
+		if(d.last_roll == -1 && d.t == 1) cout << 1;
 		return 0;
 	} 
 	cout << d.dond(d.t, d.last_roll) << endl;
