@@ -1,0 +1,34 @@
+The final lab for this course. it has 3 parts.
+
+full lab writeup: https://web.eecs.utk.edu/~jplank/plank/classes/cs302/Labs/LabA/
+
+Part AA is to calculate the probability of winning a game that is described as follows:
+You roll a single s sided die t times. You win the game if after the first roll you do not roll the number (range 0 -> s-1) that you
+previously rolled.
+
+command line for program: dond s t last-roll
+output: ratio of possible wins to possible losses
+
+if last-roll is -1 it indicates that game is started assuming there has been no previous roll, so the first roll you always pass. Any other 
+valid argument indicates the number (range 0 -> s-1) previously rolled.
+
+Parts AB, AC have you calculate the longest path of adjacent characters in a rxc grid where each character in the path is 1 greater or 
+less than each character directly connected to it in the path.
+
+adjacency is defined by the following rules (copied from lab writeup):
+
+They are in the same column and their row numbers differ by one.
+They are in the same row and their column numbers differ by one.
+If c is even, then (r,c) is adjacent to (r+1,c+1) and (r+1,c-1).
+Similarly, if c is odd, then (r,c) is adjacent to (r-1,c+1) and (r-1,c-1).
+
+part AB simply uses recursion to find the longest path, part AC uses memoization for a speedup.
+
+part AB command line: spellpath < {text_file_name}.txt
+output: length of longest path
+
+part AC command line: spellseeker < {text_file_name}.txt
+output: 
+{grid}
+"PATH"
+{path itself, r c coordinates separated by newline}
