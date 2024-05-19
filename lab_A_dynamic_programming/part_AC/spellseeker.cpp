@@ -254,7 +254,6 @@ int main() {
         } 
 
     }
-    cout << a->length << endl;
     cout << "PATH" << endl;
     while(a != NULL) {
         cout << a->r << " " << a->c << endl;
