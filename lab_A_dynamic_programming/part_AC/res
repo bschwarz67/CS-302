@@ -1,0 +1,6 @@
+(base) bryan@Macintosh-110 part_AC % time ./spellseeker < 20x20.txt
+55
+./spellseeker < 20x20.txt  1.04s user 0.03s system 99% cpu 1.078 total
+(base) bryan@Macintosh-110 part_AC % time ../part_AB/spellpath < 20x20.txt
+55
+../part_AB/spellpath < 20x20.txt  0.26s user 0.00s system 98% cpu 0.266 total
