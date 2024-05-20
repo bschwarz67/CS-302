@@ -27,8 +27,7 @@ class SpellSeeker {
     Answer *Solve(int r, int c);
 };
 
-//to prove memoization is working you could check every time it is used, print the key and the graph to make sure it matches
-//up, for tomorrow..
+
 void SpellSeeker::DFS(int r, int c, string &key) {
     char temp;
 
@@ -127,8 +126,8 @@ Answer* SpellSeeker::Solve(int r, int c) {
         }
         cout << endl;
         */
-
         return cache[key]; 
+        
     } 
     Answer *a = new Answer();
     a->r = r;
