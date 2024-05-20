@@ -6,6 +6,7 @@ Part AA is to calculate the probability of winning a game that is described as f
 You roll a single s sided die t times. You win the game if after the first roll you do not roll the number (range 0 -> s-1) that you
 previously rolled.
 
+compile: g++ -o dond -Iinclude -Wall -Wextra -std=c++11 dond.cpp
 command line for program: dond s t last-roll
 output: ratio of possible wins to possible losses
 
@@ -24,10 +25,14 @@ Similarly, if c is odd, then (r,c) is adjacent to (r-1,c+1) and (r-1,c-1).
 
 part AB simply uses recursion to find the longest path, part AC uses memoization for a speedup.
 
-part AB command line: spellpath < {text_file_name}.txt
+<b>part AB<b/>:
+compile: g++ -o spellpath -Iinclude -Wall -Wextra -std=c++11 spellpath.cpp
+command line: spellpath < {text_file_name}.txt
 output: length of longest path
 
-part AC command line: spellseeker < {text_file_name}.txt
+<b>part AC<b/>:
+compile: g++ -o spellseeker -Iinclude -Wall -Wextra -std=c++11 -O2 spellseeker.cp
+command line: spellseeker < {text_file_name}.txt
 output: 
 {grid}
 "PATH"
