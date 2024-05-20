@@ -10,7 +10,7 @@ compile: g++ -o dond -Iinclude -Wall -Wextra -std=c++11 dond.cpp
 command line for program: dond s t last-roll
 output: ratio of possible wins to possible losses
 
-if last-roll is -1 it indicates that game is started assuming there has been no previous roll, so the first roll you always pass. Any other 
+if the last-roll is -1 it indicates that game is started assuming there has been no previous roll, so the first roll you always pass. Any other 
 valid argument indicates the number (range 0 -> s-1) previously rolled.
 
 Parts AB, AC have you calculate the longest path of adjacent characters in a rxc grid where each character in the path is 1 greater or 
